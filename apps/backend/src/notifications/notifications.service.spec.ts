@@ -5,7 +5,11 @@ import { Notification } from './entities/notification.entity';
 import { PreferenceService } from './preference.service';
 import { EmailSender } from './senders/email.sender';
 import { WebhookSender } from './senders/webhook.sender';
-import { NotificationStatus, NotificationChannel, NotificationEventType } from './enums/notification-event.enum';
+import {
+  NotificationStatus,
+  NotificationChannel,
+  NotificationEventType,
+} from './enums/notification-event.enum';
 import { Repository } from 'typeorm';
 
 describe('NotificationService', () => {
@@ -81,15 +85,25 @@ describe('NotificationService', () => {
       preferenceService.getUserPreferences.mockResolvedValue([mockPref] as any);
       repo.create.mockReturnValue(mockNotification as any);
 
-      await service.handleEscrowEvent('u1', NotificationEventType.ESCROW_CREATED, { escrowId: 'e1' });
+      await service.handleEscrowEvent(
+        'u1',
+        NotificationEventType.ESCROW_CREATED,
+        { escrowId: 'e1' },
+      );
 
       expect(repo.save).toHaveBeenCalled();
     });
 
     it('should skip if preference disabled', async () => {
-      preferenceService.getUserPreferences.mockResolvedValue([{ ...mockPref, enabled: false }] as any);
+      preferenceService.getUserPreferences.mockResolvedValue([
+        { ...mockPref, enabled: false },
+      ] as any);
 
-      await service.handleEscrowEvent('u1', NotificationEventType.ESCROW_CREATED, { escrowId: 'e1' });
+      await service.handleEscrowEvent(
+        'u1',
+        NotificationEventType.ESCROW_CREATED,
+        { escrowId: 'e1' },
+      );
 
       expect(repo.save).not.toHaveBeenCalled();
     });

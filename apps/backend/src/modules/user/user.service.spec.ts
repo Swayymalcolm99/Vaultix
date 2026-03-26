@@ -46,7 +46,9 @@ describe('UserService', () => {
     it('should call findOne with correct params', async () => {
       userRepo.findOne.mockResolvedValue(mockUser as any);
       const result = await service.findByWalletAddress('GD...123');
-      expect(userRepo.findOne).toHaveBeenCalledWith({ where: { walletAddress: 'GD...123' } });
+      expect(userRepo.findOne).toHaveBeenCalledWith({
+        where: { walletAddress: 'GD...123' },
+      });
       expect(result).toEqual(mockUser);
     });
   });
@@ -55,7 +57,9 @@ describe('UserService', () => {
     it('should call findOne with correct params', async () => {
       userRepo.findOne.mockResolvedValue(mockUser as any);
       const result = await service.findById('u1');
-      expect(userRepo.findOne).toHaveBeenCalledWith({ where: { id: 'u1', isActive: true } });
+      expect(userRepo.findOne).toHaveBeenCalledWith({
+        where: { id: 'u1', isActive: true },
+      });
       expect(result).toEqual(mockUser);
     });
   });
@@ -109,7 +113,10 @@ describe('UserService', () => {
 
     it('should invalidate refresh token', async () => {
       await service.invalidateRefreshToken('t1');
-      expect(refreshTokenRepo.update).toHaveBeenCalledWith({ token: 't1' }, { isActive: false });
+      expect(refreshTokenRepo.update).toHaveBeenCalledWith(
+        { token: 't1' },
+        { isActive: false },
+      );
     });
   });
 });

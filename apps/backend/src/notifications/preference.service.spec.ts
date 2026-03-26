@@ -51,7 +51,9 @@ describe('PreferenceService', () => {
       repo.create.mockReturnValue(mockPref as any);
       repo.save.mockResolvedValue(mockPref as any);
 
-      const updates = [{ channel: NotificationChannel.EMAIL, enabled: true, eventTypes: [] }];
+      const updates = [
+        { channel: NotificationChannel.EMAIL, enabled: true, eventTypes: [] },
+      ];
       const result = await service.updatePreferences('u1', updates as any);
 
       expect(repo.create).toHaveBeenCalled();
@@ -64,7 +66,9 @@ describe('PreferenceService', () => {
       repo.findOne.mockResolvedValue(existing as any);
       repo.save.mockResolvedValue({ ...existing, enabled: true } as any);
 
-      const updates = [{ channel: NotificationChannel.EMAIL, enabled: true, eventTypes: [] }];
+      const updates = [
+        { channel: NotificationChannel.EMAIL, enabled: true, eventTypes: [] },
+      ];
       const result = await service.updatePreferences('u1', updates as any);
 
       expect(repo.save).toHaveBeenCalled();

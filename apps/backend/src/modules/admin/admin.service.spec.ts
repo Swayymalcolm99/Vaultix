@@ -16,7 +16,12 @@ describe('AdminService', () => {
 
   beforeEach(async () => {
     userRepo = {
-      findAndCount: jest.fn().mockResolvedValue([[ { id: 'u1', isActive: true, role: UserRole.USER } ], 1]),
+      findAndCount: jest
+        .fn()
+        .mockResolvedValue([
+          [{ id: 'u1', isActive: true, role: UserRole.USER }],
+          1,
+        ]),
       count: jest.fn().mockResolvedValue(1),
       findOne: jest.fn(),
       save: jest.fn(),
@@ -24,7 +29,9 @@ describe('AdminService', () => {
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         groupBy: jest.fn().mockReturnThis(),
-        getRawMany: jest.fn().mockResolvedValue([{ role: UserRole.USER, count: '1' }]),
+        getRawMany: jest
+          .fn()
+          .mockResolvedValue([{ role: UserRole.USER, count: '1' }]),
       }),
     };
 
@@ -80,10 +87,14 @@ describe('AdminService', () => {
 
   describe('getAllEscrows', () => {
     it('should return paginated escrows with filters', async () => {
-      const result = await service.getAllEscrows({ status: EscrowStatus.ACTIVE });
-      expect(escrowRepo.findAndCount).toHaveBeenCalledWith(expect.objectContaining({
-        where: { status: EscrowStatus.ACTIVE },
-      }));
+      const result = await service.getAllEscrows({
+        status: EscrowStatus.ACTIVE,
+      });
+      expect(escrowRepo.findAndCount).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { status: EscrowStatus.ACTIVE },
+        }),
+      );
       expect(result.escrows).toHaveLength(0);
     });
   });
@@ -102,9 +113,9 @@ describe('AdminService', () => {
     it('should suspend a normal user', async () => {
       const mockUser = { id: 'u1', role: UserRole.USER, isActive: true };
       userRepo.findOne.mockResolvedValue(mockUser);
-      
+
       const result = await service.suspendUser('u1', 'admin-id');
-      
+
       expect(mockUser.isActive).toBe(false);
       expect(userRepo.save).toHaveBeenCalled();
       expect(auditLogService.create).toHaveBeenCalled();
@@ -119,7 +130,9 @@ describe('AdminService', () => {
     it('should throw if user is super admin', async () => {
       const superAdmin = { id: 's1', role: UserRole.SUPER_ADMIN };
       userRepo.findOne.mockResolvedValue(superAdmin);
-      await expect(service.suspendUser('s1')).rejects.toThrow('Cannot suspend super admin');
+      await expect(service.suspendUser('s1')).rejects.toThrow(
+        'Cannot suspend super admin',
+      );
     });
   });
 });

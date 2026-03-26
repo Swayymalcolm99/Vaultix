@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StellarEventListenerService } from './stellar-event-listener.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { StellarEvent, StellarEventType } from '../entities/stellar-event.entity';
+import {
+  StellarEvent,
+  StellarEventType,
+} from '../entities/stellar-event.entity';
 import { Escrow, EscrowStatus } from '../../escrow/entities/escrow.entity';
 import { SorobanClientService } from '../../../services/stellar/soroban-client.service';
 import { ConfigService } from '@nestjs/config';
@@ -54,7 +57,9 @@ describe('StellarEventListenerService', () => {
       ],
     }).compile();
 
-    service = module.get<StellarEventListenerService>(StellarEventListenerService);
+    service = module.get<StellarEventListenerService>(
+      StellarEventListenerService,
+    );
     stellarEventRepo = module.get(getRepositoryToken(StellarEvent));
     escrowRepo = module.get(getRepositoryToken(Escrow));
     sorobanClient = module.get(SorobanClientService);
@@ -74,7 +79,9 @@ describe('StellarEventListenerService', () => {
 
   describe('onModuleInit', () => {
     it('should initialize and start listener', async () => {
-      const startSpy = jest.spyOn(service, 'startEventListener').mockResolvedValue();
+      const startSpy = jest
+        .spyOn(service, 'startEventListener')
+        .mockResolvedValue();
       await service.onModuleInit();
       expect(sorobanClient.getContractId).toHaveBeenCalled();
       expect(startSpy).toHaveBeenCalled();
@@ -84,7 +91,9 @@ describe('StellarEventListenerService', () => {
   describe('startEventListener', () => {
     it('should set isRunning to true and poll events', async () => {
       // Mock pollEvents to avoid infinite loop
-      const pollSpy = jest.spyOn(service as any, 'pollEvents').mockResolvedValue(undefined);
+      const pollSpy = jest
+        .spyOn(service as any, 'pollEvents')
+        .mockResolvedValue(undefined);
       await service.startEventListener();
       expect(service.getSyncStatus().isRunning).toBe(true);
       expect(pollSpy).toHaveBeenCalled();
@@ -113,8 +122,11 @@ describe('StellarEventListenerService', () => {
     it('should update status to ACTIVE', async () => {
       const mockEscrow = { id: 'e1', status: EscrowStatus.PENDING };
       escrowRepo.findOne.mockResolvedValue(mockEscrow);
-      
-      const event = { escrowId: 'e1', eventType: StellarEventType.ESCROW_FUNDED } as any;
+
+      const event = {
+        escrowId: 'e1',
+        eventType: StellarEventType.ESCROW_FUNDED,
+      } as any;
       await (service as any).handleEscrowFunded(event);
 
       expect(mockEscrow.status).toBe(EscrowStatus.ACTIVE);

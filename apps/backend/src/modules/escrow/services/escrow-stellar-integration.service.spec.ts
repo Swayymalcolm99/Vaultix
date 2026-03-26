@@ -58,7 +58,9 @@ describe('EscrowStellarIntegrationService', () => {
       ],
     }).compile();
 
-    service = module.get<EscrowStellarIntegrationService>(EscrowStellarIntegrationService);
+    service = module.get<EscrowStellarIntegrationService>(
+      EscrowStellarIntegrationService,
+    );
     escrowRepo = module.get(getRepositoryToken(Escrow));
     stellarService = module.get(StellarService);
     escrowOps = module.get(EscrowOperationsService);
@@ -85,13 +87,19 @@ describe('EscrowStellarIntegrationService', () => {
 
     it('should throw if escrow not found', async () => {
       escrowRepo.findOne.mockResolvedValue(null);
-      await expect(service.createOnChainEscrow('e1')).rejects.toThrow('not found');
+      await expect(service.createOnChainEscrow('e1')).rejects.toThrow(
+        'not found',
+      );
     });
   });
 
   describe('fundOnChainEscrow', () => {
     it('should fund successfully', async () => {
-      const hash = await service.fundOnChainEscrow('e1', 'funder-pubkey', '100');
+      const hash = await service.fundOnChainEscrow(
+        'e1',
+        'funder-pubkey',
+        '100',
+      );
       expect(hash).toBe('tx-hash');
       expect(escrowOps.createFundingOps).toHaveBeenCalledWith('e1');
     });
@@ -99,7 +107,11 @@ describe('EscrowStellarIntegrationService', () => {
 
   describe('releaseMilestonePayment', () => {
     it('should release payment successfully', async () => {
-      const hash = await service.releaseMilestonePayment('e1', 0, 'releaser-pubkey');
+      const hash = await service.releaseMilestonePayment(
+        'e1',
+        0,
+        'releaser-pubkey',
+      );
       expect(hash).toBe('tx-hash');
       expect(escrowOps.createMilestoneReleaseOps).toHaveBeenCalledWith('e1', 0);
     });
@@ -109,7 +121,11 @@ describe('EscrowStellarIntegrationService', () => {
     it('should confirm successfully', async () => {
       const hash = await service.confirmEscrow('e1', 'confirmer-pubkey', 0);
       expect(hash).toBe('tx-hash');
-      expect(escrowOps.createConfirmationOps).toHaveBeenCalledWith('e1', 'confirmer-pubkey', 0);
+      expect(escrowOps.createConfirmationOps).toHaveBeenCalledWith(
+        'e1',
+        'confirmer-pubkey',
+        0,
+      );
     });
   });
 
@@ -123,7 +139,10 @@ describe('EscrowStellarIntegrationService', () => {
 
   describe('completeOnChainEscrow', () => {
     it('should complete successfully', async () => {
-      const hash = await service.completeOnChainEscrow('e1', 'completer-pubkey');
+      const hash = await service.completeOnChainEscrow(
+        'e1',
+        'completer-pubkey',
+      );
       expect(hash).toBe('tx-hash');
       expect(escrowOps.createCompletionOps).toHaveBeenCalledWith('e1');
     });
@@ -133,7 +152,10 @@ describe('EscrowStellarIntegrationService', () => {
     it('should call streamTransactions', () => {
       const callback = jest.fn();
       service.monitorOnChainEscrow('e1', 'pubkey', callback);
-      expect(stellarService.streamTransactions).toHaveBeenCalledWith('pubkey', expect.any(Function));
+      expect(stellarService.streamTransactions).toHaveBeenCalledWith(
+        'pubkey',
+        expect.any(Function),
+      );
     });
   });
 });

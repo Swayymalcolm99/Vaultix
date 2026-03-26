@@ -17,7 +17,11 @@ describe('ApiKeysService', () => {
           provide: getRepositoryToken(ApiKey),
           useValue: {
             create: jest.fn().mockImplementation((dto) => dto),
-            save: jest.fn().mockImplementation((dto) => Promise.resolve({ ...dto, id: 'k1', createdAt: new Date() })),
+            save: jest
+              .fn()
+              .mockImplementation((dto) =>
+                Promise.resolve({ ...dto, id: 'k1', createdAt: new Date() }),
+              ),
             findOne: jest.fn(),
             find: jest.fn(),
           },
@@ -59,16 +63,18 @@ describe('ApiKeysService', () => {
     it('should set active to false', async () => {
       const mockKey = { id: 'k1', ownerUserId: 'u1', active: true };
       repo.findOne.mockResolvedValue(mockKey as any);
-      
+
       await service.revoke('k1', 'u1');
-      
+
       expect(mockKey.active).toBe(false);
       expect(repo.save).toHaveBeenCalled();
     });
 
     it('should throw if not found', async () => {
       repo.findOne.mockResolvedValue(null);
-      await expect(service.revoke('k1', 'u1')).rejects.toThrow(NotFoundException);
+      await expect(service.revoke('k1', 'u1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
