@@ -1,12 +1,7 @@
 import React from 'react';
 import ConditionItem from './ConditionItem';
 
-interface Condition {
-  id: string;
-  description: string;
-  fulfilled: boolean;
-  confirmed: boolean;
-}
+import { Condition } from '@/types/escrow';
 
 interface Props {
   conditions: Condition[];

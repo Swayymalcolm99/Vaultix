@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import TextArea from "@/components/ui/TextArea";
+import Input from "@/components/ui/Input";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 
@@ -107,7 +107,7 @@ export default function FileDisputeModal({
         {/* Description */}
         <div className="mt-4">
           <label className="text-sm font-medium">Description *</label>
-          <Textarea
+          <TextArea
             placeholder="Provide detailed explanation..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}

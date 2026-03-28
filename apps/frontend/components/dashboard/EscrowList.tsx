@@ -3,26 +3,7 @@ import Link from 'next/link';
 import EscrowCard from './EscrowCard';
 import { EscrowCardSkeleton } from '@/components/ui/EscrowCardSkeleton';
 
-// Define the interface here since we can't import from types yet
-interface IEscrow {
-  id: string;
-  title: string;
-  description: string;
-  amount: string;
-  asset: string;
-  creatorAddress: string;
-  counterpartyAddress: string;
-  deadline: string;
-  status: 'created' | 'funded' | 'confirmed' | 'released' | 'completed' | 'cancelled' | 'disputed';
-  createdAt: string;
-  updatedAt: string;
-  milestones?: Array<{
-    id: string;
-    title: string;
-    amount: string;
-    status: 'pending' | 'released';
-  }>;
-}
+import { IEscrow } from '@/types/escrow';
 
 interface EscrowListProps {
   escrows: IEscrow[];

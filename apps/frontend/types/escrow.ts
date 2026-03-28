@@ -26,6 +26,13 @@ export interface IParty {
   createdAt: string;
 }
 
+export interface Condition {
+  id: string;
+  description: string;
+  fulfilled: boolean;
+  confirmed: boolean;
+}
+
 export interface ICondition {
   id: string;
   description: string;

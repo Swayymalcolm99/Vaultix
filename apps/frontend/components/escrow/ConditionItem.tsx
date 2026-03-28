@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import FulfillConditionModal from './FulfillConditionModal';
 
-interface Condition {
-  id: string;
-  description: string;
-  fulfilled: boolean;
-  confirmed: boolean;
-}
+import { Condition } from '@/types/escrow';
 
 interface Props {
   condition: Condition;

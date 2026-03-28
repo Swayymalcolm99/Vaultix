@@ -1,24 +1,5 @@
 import React from 'react';
-// Temporarily define the interface here until types are properly configured
-interface IEscrow {
-  id: string;
-  title: string;
-  description: string;
-  amount: string;
-  asset: string;
-  creatorAddress: string;
-  counterpartyAddress: string;
-  deadline: string;
-  status: 'created' | 'funded' | 'confirmed' | 'released' | 'completed' | 'cancelled' | 'disputed';
-  createdAt: string;
-  updatedAt: string;
-  milestones?: Array<{
-    id: string;
-    title: string;
-    amount: string;
-    status: 'pending' | 'released';
-  }>;
-}
+import { IEscrow } from '@/types/escrow';
 
 interface EscrowCardProps {
   escrow: IEscrow;
@@ -75,13 +56,13 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
 
   const getQuickActions = () => {
     const actions = [];
-    
+
     // Based on status, show appropriate actions
     switch (escrow.status) {
       case 'created':
       case 'funded':
         actions.push(
-          <a 
+          <a
             key="view-details"
             href={`/escrow/${escrow.id}`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
@@ -92,14 +73,14 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
         break;
       case 'confirmed':
         actions.push(
-          <a 
+          <a
             key="confirm-delivery"
             href={`/escrow/${escrow.id}/confirm`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
           >
             Confirm Delivery
           </a>,
-          <a 
+          <a
             key="dispute"
             href={`/escrow/${escrow.id}/dispute`}
             className="text-red-600 hover:text-red-900 text-sm font-medium ml-4"
@@ -110,7 +91,7 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
         break;
       case 'released':
         actions.push(
-          <a 
+          <a
             key="view-details"
             href={`/escrow/${escrow.id}`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
@@ -121,7 +102,7 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
         break;
       case 'completed':
         actions.push(
-          <a 
+          <a
             key="view-details"
             href={`/escrow/${escrow.id}`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
@@ -132,7 +113,7 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
         break;
       case 'disputed':
         actions.push(
-          <a 
+          <a
             key="view-details"
             href={`/escrow/${escrow.id}`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
@@ -143,7 +124,7 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
         break;
       default:
         actions.push(
-          <a 
+          <a
             key="view-details"
             href={`/escrow/${escrow.id}`}
             className="text-blue-600 hover:text-blue-900 text-sm font-medium"
@@ -152,7 +133,7 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
           </a>
         );
     }
-    
+
     return actions;
   };
 
@@ -168,30 +149,30 @@ const EscrowCard: React.FC<EscrowCardProps> = ({ escrow }) => {
               </span>
             </div>
             <p className="mt-1 text-sm text-gray-500 line-clamp-2">{escrow.description}</p>
-            
+
             <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Amount</p>
                 <p className="text-sm text-gray-900">{escrow.amount} {escrow.asset}</p>
               </div>
-              
+
               <div>
                 <p className="text-sm font-medium text-gray-500">Counterparty</p>
                 <p className="text-sm text-gray-900 truncate">{escrow.counterpartyAddress.substring(0, 10)}...</p>
               </div>
-              
+
               <div>
                 <p className="text-sm font-medium text-gray-500">Created</p>
                 <p className="text-sm text-gray-900">{formatDate(escrow.createdAt)}</p>
               </div>
-              
+
               <div>
                 <p className="text-sm font-medium text-gray-500">Deadline</p>
                 <p className="text-sm text-gray-900">{formatDate(escrow.deadline)}</p>
               </div>
             </div>
           </div>
-          
+
           <div className="ml-4 flex-shrink-0 flex flex-col items-end space-y-3">
             <div className="flex space-x-3">
               {getQuickActions()}
