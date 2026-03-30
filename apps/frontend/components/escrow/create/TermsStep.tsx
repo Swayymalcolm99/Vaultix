@@ -2,8 +2,8 @@
 
 import { useFormContext } from 'react-hook-form';
 import { CreateEscrowFormData } from '@/lib/escrow-schema';
-import Input from '../../ui/Input';
-import Select from '../../ui/BasicSelect';
+import Input from '@/components/ui/Input';
+import Select from '@/components/ui/BasicSelect';
 
 export default function TermsStep() {
   const {
